@@ -45,8 +45,7 @@ export default function MainPage() {
                 </ListItem>
                 <ListItem>
                   All operations performed issue a query or mutation to the
-                  graphql-yoga server, utilizing the resolver defined for that
-                  operation.
+                  graphql-yoga server.
                 </ListItem>
                 <ListItem>
                   GraphQL Yoga server is setup to listen via an API route, a feature provided by NextJS.
@@ -63,8 +62,8 @@ export default function MainPage() {
               Docs Page:
               <UnorderedList>
                 <ListItem>
-                  View a list of external sites that were useful in learning
-                  about these tools.
+                  View a list of external sites that are useful in learning
+                  to develop with these tools.
                 </ListItem>
               </UnorderedList>
             </ListItem>
@@ -75,7 +74,7 @@ export default function MainPage() {
                   The navigation drawer utilizes the "layout" feature of NextJS.
                 </ListItem>
                 <ListItem>
-                  The component rendered in the root-level layout, meaning it is
+                  The component is rendered in the root-level layout, meaning it is
                   rendered on all pages and preserves state.
                 </ListItem>
               </UnorderedList>
