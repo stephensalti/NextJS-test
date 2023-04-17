@@ -14,9 +14,7 @@ import {
   IconButton,
   List,
   ListItem,
-  Spinner,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import CreateOrUpdateModal from "./createOrUpdateModal";
 import { ToDo } from "./page";
 
@@ -27,11 +25,15 @@ interface ToDoCardProps {
   isModalOpen: boolean;
   openModal: () => void;
   closeModal: Function;
-  loading: boolean;
   addItem: (title: string, description: string, completed: boolean) => void;
   setModalToDo: (toDo: ToDo) => void;
   modalToDo?: ToDo;
-  updateItem: (id: string, title: string, description: string, completed: boolean) => void;
+  updateItem: (
+    id: string,
+    title: string,
+    description: string,
+    completed: boolean
+  ) => void;
 }
 
 const ToDoCard = ({
@@ -41,7 +43,6 @@ const ToDoCard = ({
   isModalOpen,
   openModal,
   closeModal,
-  loading,
   addItem,
   setModalToDo,
   modalToDo,
@@ -101,20 +102,7 @@ const ToDoCard = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={4}>
-          {loading ? (
-            <Center>
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="telegram.400"
-                size="xl"
-                alignSelf="center"
-              />
-            </Center>
-          ) : (
-            <List>{toDoListItems}</List>
-          )}
+          <List>{toDoListItems}</List>
         </AccordionPanel>
       </Card>
       <CreateOrUpdateModal

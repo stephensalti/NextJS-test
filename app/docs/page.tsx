@@ -9,6 +9,7 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
+import { Fragment } from "react";
 
 const DocsPage = () => {
   const links: Readonly<[string, string]>[] = [
@@ -31,9 +32,8 @@ const DocsPage = () => {
   const docLinks = Array.from(linkMap.keys()).map((title, index) => {
     const href = linkMap.get(title)!;
     return (
-      <>
+      <Fragment key={index} >
         <LinkBox
-          key={index}
           fontSize="xl"
           color="telegram.400"
           paddingLeft="0.5em"
@@ -46,7 +46,7 @@ const DocsPage = () => {
           </LinkOverlay>
         </LinkBox>
         <Divider />
-      </>
+      </Fragment>
     );
   });
 

@@ -1,3 +1,6 @@
+/**
+ * This component is currently in `/app/todos', therefore this UI will be rendered when navigating to localhost:3000/todos.
+ */
 "use client";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";

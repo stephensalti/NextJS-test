@@ -36,22 +36,14 @@ const ToDosContainer = ({
   modalToDo,
   updateItem,
 }: ToDoContainerProps) => {
-  const [loading, setLoading] = useState(false);
   // Setting state in the parent page.tsx component was causing errors.
   // useEffect also cannot have awaits directly inside unless they are placed in an async function declared inside the hook
   useEffect(() => {
     const fetchToDos = async () => {
-      if (toDos.size === 0) {
-        // Show spinners on initial load
-        setLoading(true);
-      }
       const toDosData = await getToDos();
       const toDosMap = toDosData.reduce((acc, task) => {
         return acc.set(task.id, task);
       }, new Map<string, ToDo>());
-      if (loading) {
-        setLoading(false);
-      }
 
       if (!isEqual(toDos, toDosMap)) {
         setToDos(toDosMap);
@@ -68,14 +60,7 @@ const ToDosContainer = ({
     ? Array.from<ToDo>(toDos.values()).filter((task) => task.completed)
     : [];
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Heading textAlign="center">Todos:</Heading>
+    <>
       <Accordion width="60%" defaultIndex={[0]} allowMultiple>
         <AccordionItem border="none">
           <ToDoCard
@@ -85,7 +70,6 @@ const ToDosContainer = ({
             isModalOpen={isModalOpen}
             openModal={openModal}
             closeModal={closeModal}
-            loading={loading}
             addItem={addItem}
             setModalToDo={setModalToDo}
             modalToDo={modalToDo}
@@ -100,7 +84,6 @@ const ToDosContainer = ({
             isModalOpen={isModalOpen}
             openModal={openModal}
             closeModal={closeModal}
-            loading={loading}
             addItem={addItem}
             setModalToDo={setModalToDo}
             modalToDo={modalToDo}
@@ -120,7 +103,7 @@ const ToDosContainer = ({
       >
         CREATE
       </Button>
-    </div>
+    </>
   );
 };
 

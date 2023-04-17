@@ -79,7 +79,7 @@ const NavDrawer = () => {
                     marginRight="0.5em"
                     verticalAlign="sub"
                   />
-                  To-Dos
+                  To-Do's
                 </ListItem>
               </Link>
               <Link

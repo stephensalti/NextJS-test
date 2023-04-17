@@ -1,3 +1,7 @@
+/**
+ * In NextJS 13, any component named "page" is considered a route in your application.
+ * Since this is at the route of the "app" directory, this UI is rendered for '/'.
+ */
 "use client";
 import {
   Card,
@@ -48,13 +52,19 @@ export default function MainPage() {
                   graphql-yoga server.
                 </ListItem>
                 <ListItem>
-                  GraphQL Yoga server is setup to listen via an API route, a feature provided by NextJS.
+                  GraphQL Yoga server is setup to listen via an API route, a
+                  feature provided by NextJS.
                 </ListItem>
                 <ListItem>
                   All to-do's are stored in a simple database powered by
                   SQL-Lite. The GraphQL-Yoga resolvers hook into this database
                   using <b>Prisma</b>, a database client built around a schema
                   you provide.
+                </ListItem>
+                <ListItem>
+                  Page uses the new Loading UI feature of NextJS 13, which adds
+                  instand loading state to the page until the page contents
+                  finish loading in.
                 </ListItem>
               </UnorderedList>
             </ListItem>
