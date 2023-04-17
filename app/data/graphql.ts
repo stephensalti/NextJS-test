@@ -1,65 +1,38 @@
-/** 
+/**
  * This file is used to create functions that will call graphql queries.
  * The graphql client is fetched and queries passed to it.
  * This pattern is very simmilar to the current approach used in Hub 2.0 for learning purposes.
  * However, this pattern is subject to change in Hub 2.0.
  *  */
-import { GraphQLClient } from "graphql-request";
+import { GraphQLClient, Variables } from "graphql-request";
+import {
+  DeleteToDoMutation,
+  PostToDoMutation,
+  UpdateToDoMutation,
+} from "./mutations";
+import { ToDosQuery } from "./queries";
+
+interface RequestParams {
+  document: string;
+  args?: Variables;
+}
 
 const getServerClient = (): GraphQLClient => {
   const path = "http://localhost:3000/api/graphql";
   return new GraphQLClient(`${path}`);
 };
 
-const ToDosQuery = /* GraphQL */ `
-  query ToDosQuery {
-    toDos {
-      id
-      description
-      title
-      completed
-    }
-  }
-`;
-
-const PostToDoMutation = `
-  mutation PostToDo($title: String!, $description: String!, $completed: Boolean!) {
-    postToDo(title: $title, description: $description, completed: $completed) {
-      id
-      title
-      description
-      completed
-    }
-  }
-`;
-
-const DeleteToDoMutation = `
-  mutation DeleteToDo($id: ID!) {
-    deleteToDo(id: $id) {
-      id
-    }
-  }
-`;
-
-const UpdateToDoMutation = `
-  mutation UpdateToDo($id: ID!, $title: String!, $description: String!, $completed: Boolean!) {
-    updateToDo(id: $id, title: $title, description: $description, completed: $completed) {
-      id
-      title
-      description
-      completed
-    }
-  }
-`;
-
-export async function getToDos() {
-  return getServerClient()
-    .request(ToDosQuery)
-    .then((res) => (res as any).toDos)
+const request = async ({ document, args }: RequestParams) =>
+  getServerClient()
+    .request(document, args)
+    .then((res) => res as any)
     .catch((err) => {
       console.error(err);
       return [];
     });
+
+export async function getToDos() {
+  return request({ document: ToDosQuery });
 }
 
 export async function postToDo(
@@ -67,23 +40,14 @@ export async function postToDo(
   description: string,
   completed: boolean
 ) {
-  return getServerClient()
-    .request(PostToDoMutation, { title, description, completed })
-    .then((res) => res as any)
-    .catch((err) => {
-      console.error(err);
-      return [];
-    });
+  return request({
+    document: PostToDoMutation,
+    args: { title, description, completed },
+  });
 }
 
 export async function deleteToDo(id: string) {
-  return getServerClient()
-    .request(DeleteToDoMutation, { id })
-    .then((res) => res as any)
-    .catch((err) => {
-      console.error(err);
-      return [];
-    });
+  return request({ document: DeleteToDoMutation, args: { id } });
 }
 
 export async function updateToDo(
@@ -92,11 +56,8 @@ export async function updateToDo(
   description: string,
   completed: boolean
 ) {
-  return getServerClient()
-    .request(UpdateToDoMutation, { id, title, description, completed })
-    .then((res) => res as any)
-    .catch((err) => {
-      console.error(err);
-      return [];
-    });
+  return request({
+    document: UpdateToDoMutation,
+    args: { id, title, description, completed },
+  });
 }

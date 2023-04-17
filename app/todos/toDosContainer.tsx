@@ -40,8 +40,8 @@ const ToDosContainer = ({
   // useEffect also cannot have awaits directly inside unless they are placed in an async function declared inside the hook
   useEffect(() => {
     const fetchToDos = async () => {
-      const toDosData = await getToDos();
-      const toDosMap = toDosData.reduce((acc, task) => {
+      const results = await getToDos();
+      const toDosMap = results.toDos.reduce((acc, task) => {
         return acc.set(task.id, task);
       }, new Map<string, ToDo>());
 
