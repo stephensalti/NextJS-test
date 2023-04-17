@@ -4,10 +4,11 @@
  * The route component (page) seems to consider that an invalid use of hooks when executed there. 
  */
 "use client";
-import { Accordion, AccordionItem, Button, Heading } from "@chakra-ui/react";
+import { Accordion, AccordionItem, Button } from "@chakra-ui/react";
 import { isEqual } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getToDos } from "../data/graphql";
+import CreateOrUpdateModal from "./createOrUpdateModal";
 import { ToDo } from "./page";
 import ToDoCard from "./toDoCard";
 
@@ -20,7 +21,7 @@ interface ToDoContainerProps {
   closeModal: () => void;
   addItem: (title: string, description: string, completed: boolean) => void;
   setModalToDo: (toDo?: ToDo) => void;
-  modalToDo?: ToDo;
+  modalToDo?: Partial<ToDo>;
   updateItem: (id: string, title: string, description: string, completed: boolean) => void;
 }
 
@@ -67,13 +68,8 @@ const ToDosContainer = ({
             toDoItems={toDoItems}
             cardName="Scheduled:"
             deleteItem={deleteItem}
-            isModalOpen={isModalOpen}
             openModal={openModal}
-            closeModal={closeModal}
-            addItem={addItem}
             setModalToDo={setModalToDo}
-            modalToDo={modalToDo}
-            updateItem={updateItem}
           />
         </AccordionItem>
         <AccordionItem border="none">
@@ -81,13 +77,8 @@ const ToDosContainer = ({
             toDoItems={completedItems}
             cardName="Completed:"
             deleteItem={deleteItem}
-            isModalOpen={isModalOpen}
             openModal={openModal}
-            closeModal={closeModal}
-            addItem={addItem}
             setModalToDo={setModalToDo}
-            modalToDo={modalToDo}
-            updateItem={updateItem}
           />
         </AccordionItem>
       </Accordion>
@@ -103,6 +94,14 @@ const ToDosContainer = ({
       >
         CREATE
       </Button>
+      <CreateOrUpdateModal
+        closeModal={closeModal}
+        isOpen={isModalOpen}
+        selectedItem={modalToDo}
+        addItem={addItem}
+        updateItem={updateItem}
+        setModalToDo={setModalToDo}
+      />
     </>
   );
 };

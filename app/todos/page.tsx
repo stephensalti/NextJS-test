@@ -16,7 +16,7 @@ export interface ToDo {
 
 const TodosPage = () => {
   const [toDos, setToDos] = useState(new Map());
-  const [modalToDo, setModalToDo] = useState<ToDo | undefined>();
+  const [modalToDo, setModalToDo] = useState<Partial<ToDo> | undefined>();
   
   const {
     isOpen: isModalOpen,

@@ -13,15 +13,20 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { ToDo } from "./page";
 
 interface CreateOrUpdateProps {
-  selectedItem?: ToDo;
+  selectedItem?: Partial<ToDo>;
   isOpen: boolean;
   closeModal: Function;
   addItem: (title: string, description: string, completed: boolean) => void;
-  updateItem: (id: string, title: string, description: string, completed: boolean) => void;
+  updateItem: (
+    id: string,
+    title: string,
+    description: string,
+    completed: boolean
+  ) => void;
+  setModalToDo: (toDo?: Partial<ToDo>) => void;
 }
 
 const CreateOrUpdateModal = ({
@@ -30,19 +35,20 @@ const CreateOrUpdateModal = ({
   closeModal,
   addItem,
   updateItem,
+  setModalToDo,
 }: CreateOrUpdateProps) => {
-  const [title, setTitle] = useState(selectedItem?.title);
-  const [description, setDescription] = useState(selectedItem?.description);
-  const [completed, setCompleted] = useState(selectedItem?.completed);
+  const { id, title, description, completed } = selectedItem || {
+    id: undefined,
+    title: undefined,
+    description: undefined,
+    completed: false,
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (selectedItem) {
-      const updatedTitle = title ?? selectedItem.title;
-      const updatedDesc = description ?? selectedItem.description;
-      const updatedCompleted = completed !== undefined ? completed : selectedItem.completed;
+    if (id) {
       // update existing
-      updateItem(selectedItem!.id, updatedTitle, updatedDesc, updatedCompleted)
+      updateItem(id, title!, description!, !!completed);
     } else {
       // create new
       addItem(title as string, description as string, !!completed);
@@ -54,9 +60,7 @@ const CreateOrUpdateModal = ({
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmit}>
-          <ModalHeader>
-            {selectedItem ? "Edit To-Do" : "Create To-Do"}
-          </ModalHeader>
+          <ModalHeader>{id ? "Edit To-Do" : "Create To-Do"}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl mb="0.5em" isRequired>
@@ -64,8 +68,15 @@ const CreateOrUpdateModal = ({
               <Input
                 placeholder="Title"
                 // Use default for initial render, changes after that are cleared on close
-                defaultValue={selectedItem?.title}
-                onChange={(event) => setTitle(event.currentTarget.value)}
+                defaultValue={title}
+                onChange={(event) =>
+                  setModalToDo({
+                    id,
+                    title: event.currentTarget.value,
+                    description,
+                    completed,
+                  })
+                }
               />
             </FormControl>
             <FormControl mb="1em" isRequired>
@@ -73,8 +84,15 @@ const CreateOrUpdateModal = ({
               <Input
                 placeholder="Description of task"
                 // Use default for initial render, changes after that are cleared on close
-                defaultValue={selectedItem?.description}
-                onChange={(event) => setDescription(event.currentTarget.value)}
+                defaultValue={description}
+                onChange={(event) =>
+                  setModalToDo({
+                    id,
+                    title,
+                    description: event.currentTarget.value,
+                    completed,
+                  })
+                }
               />
             </FormControl>
             <FormControl mb="0.5em">
@@ -82,8 +100,16 @@ const CreateOrUpdateModal = ({
                 size="md"
                 color="telegram.400"
                 textColor="black"
-                defaultChecked={!!selectedItem?.completed}
-                onChange={(event) => setCompleted(event.currentTarget.checked)}
+                defaultChecked={completed}
+                isChecked={completed}
+                onChange={(event) =>
+                  setModalToDo({
+                    id,
+                    title,
+                    description,
+                    completed: event.currentTarget.checked,
+                  })
+                }
               >
                 Completed
               </Checkbox>

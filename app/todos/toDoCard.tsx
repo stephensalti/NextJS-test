@@ -15,38 +15,22 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
-import CreateOrUpdateModal from "./createOrUpdateModal";
 import { ToDo } from "./page";
 
 interface ToDoCardProps {
   toDoItems: ToDo[];
   cardName: string;
   deleteItem: Function;
-  isModalOpen: boolean;
   openModal: () => void;
-  closeModal: Function;
-  addItem: (title: string, description: string, completed: boolean) => void;
   setModalToDo: (toDo: ToDo) => void;
-  modalToDo?: ToDo;
-  updateItem: (
-    id: string,
-    title: string,
-    description: string,
-    completed: boolean
-  ) => void;
 }
 
 const ToDoCard = ({
   toDoItems,
   cardName,
   deleteItem,
-  isModalOpen,
   openModal,
-  closeModal,
-  addItem,
   setModalToDo,
-  modalToDo,
-  updateItem,
 }: ToDoCardProps) => {
   const toDoListItems = toDoItems.map((task, index) => {
     return (
@@ -105,13 +89,6 @@ const ToDoCard = ({
           <List>{toDoListItems}</List>
         </AccordionPanel>
       </Card>
-      <CreateOrUpdateModal
-        closeModal={closeModal}
-        isOpen={isModalOpen}
-        selectedItem={modalToDo}
-        addItem={addItem}
-        updateItem={updateItem}
-      />
     </div>
   );
 };
